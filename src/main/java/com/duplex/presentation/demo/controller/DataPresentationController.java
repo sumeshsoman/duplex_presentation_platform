@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class DataPresentationController {
 
@@ -27,9 +29,10 @@ public class DataPresentationController {
   public ResponseEntity<CSVDataDTO> getPersonByName(@PathVariable("name") String name) {
     HttpStatus status = HttpStatus.OK;
     CSVDataDTO dataDTO;
-    Person person = repository.findByName(name).get(0);
-    if (null != person) {
-      dataDTO = new CSVDataDTO(person);
+    List<Person> personList = repository.findByName(name);
+
+    if (null != personList && personList.size() > 0) {
+      dataDTO = new CSVDataDTO(personList.get(0));
     } else {
       dataDTO = new CSVDataDTO();
       status = HttpStatus.NOT_FOUND;
