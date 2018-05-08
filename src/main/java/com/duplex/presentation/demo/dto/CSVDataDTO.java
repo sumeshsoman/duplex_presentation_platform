@@ -18,6 +18,12 @@ public class CSVDataDTO implements Serializable {
 
   public CSVDataDTO() {}
 
+  public CSVDataDTO(Person person) {
+    this.name = person.getName();
+    this.age = person.getAge();
+    this.height = person.getHeight();
+  }
+
   public String getName() {
     return name;
   }
@@ -40,11 +46,5 @@ public class CSVDataDTO implements Serializable {
 
   public void setHeight(String height) {
     this.height = height;
-  }
-
-  public CSVDataDTO(Person person) {
-    this.name = person.getName();
-    this.age = person.getAge();
-    this.height = person.getHeight();
   }
 }

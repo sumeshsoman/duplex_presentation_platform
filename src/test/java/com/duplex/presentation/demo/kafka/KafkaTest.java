@@ -22,14 +22,10 @@ import java.util.concurrent.TimeUnit;
 public class KafkaTest {
 
   private static String BOOT_TOPIC = "DataForPresenter";
-
-  @Autowired private Sender sender;
-
-  @Autowired private Receiver receiver;
-
-  @Autowired private PersonRepository repository;
-
   @ClassRule public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, BOOT_TOPIC);
+  @Autowired private Sender sender;
+  @Autowired private Receiver receiver;
+  @Autowired private PersonRepository repository;
 
   @Test
   public void testReceive() throws Exception {
@@ -40,12 +36,11 @@ public class KafkaTest {
     receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
     Assert.assertEquals(0, receiver.getLatch().getCount());
 
-    Iterable<Person> personIterable  = repository.findAll();
+    Iterable<Person> personIterable = repository.findAll();
     personIterable.forEach(person -> Assert.assertNotNull(person));
 
     Person person = repository.findByName("Joe").get(0);
     Assert.assertNotNull(person);
     Assert.assertEquals("Joe", person.getName());
-
   }
 }

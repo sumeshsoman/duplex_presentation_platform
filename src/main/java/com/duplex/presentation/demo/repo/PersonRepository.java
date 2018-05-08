@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
-    List<Person> findByName(@Param("name") String name);
-
+  List<Person> findByName(@Param("name") String name);
 }

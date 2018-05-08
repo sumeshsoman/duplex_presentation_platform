@@ -38,23 +38,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class DataPresentationControllerTest {
 
+  private static String BOOT_TOPIC = "DataForPresenter";
+  @ClassRule public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, BOOT_TOPIC);
   @Resource private WebApplicationContext webApplicationContext;
-
   private MockMvc mockMvc;
-
   private RestTemplate restTemplate;
-
   private ObjectMapper objectMapper = new ObjectMapper();
 
-  private ClassLoader classLoader;
-
-  private static String BOOT_TOPIC = "DataForPresenter";
-
   @Autowired private Sender sender;
-
   @Autowired private Receiver receiver;
-
-  @ClassRule public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, BOOT_TOPIC);
 
   @Before
   public void setUp() throws Exception {
@@ -66,7 +58,7 @@ public class DataPresentationControllerTest {
     objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
     String dataToSend =
-            "[{\"name\":\"Joe\",\"age\":22,\"height\":\"5.1\"},{\"name\":\"Alice\",\"age\":32,\"height\":\"5.7\"},{\"name\":\"Madden\",\"age\":55,\"height\":\"5.9\"},{\"name\":\"Alfred\",\"age\":21,\"height\":\"6.2\"}]";
+        "[{\"name\":\"Joe\",\"age\":22,\"height\":\"5.1\"},{\"name\":\"Alice\",\"age\":32,\"height\":\"5.7\"},{\"name\":\"Madden\",\"age\":55,\"height\":\"5.9\"},{\"name\":\"Alfred\",\"age\":21,\"height\":\"6.2\"}]";
     sender.send(BOOT_TOPIC, dataToSend);
 
     receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);

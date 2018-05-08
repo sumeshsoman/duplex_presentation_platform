@@ -31,7 +31,8 @@ public class Receiver {
   public void receive(ConsumerRecord<?, ?> consumerRecord) {
     LOGGER.info("received payload='{}'", consumerRecord.toString());
 
-    List<CSVDataDTO> csvDataDTOList = HelperUtil.generateCSVData(String.valueOf(consumerRecord.value()));
+    List<CSVDataDTO> csvDataDTOList =
+        HelperUtil.generateCSVData(String.valueOf(consumerRecord.value()));
     csvDataDTOList.stream().map(dto -> new Person(dto)).forEach(person -> repository.save(person));
     latch.countDown();
   }
